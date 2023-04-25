@@ -1,0 +1,4 @@
+Keep software up-to-date.
+Check links before you click.
+Double-check for HTTPS on websites.
+Add end-to-end encrypion to your email.
