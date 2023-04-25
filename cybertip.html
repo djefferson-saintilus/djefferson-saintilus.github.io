@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Cybersecurité Tip du Jour</title>
+    <style>
+      /* Styles pour le corps de la page */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* Styles pour l'en-tête */
+      header {
+        background-color: #007bff;
+        color: white;
+        padding: 20px;
+      }
+
+      /* Styles pour le contenu */
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Styles pour les boutons */
+      button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 5px;
+        cursor: pointer;
+      }
+
+      /* Styles pour le pied de page */
+      footer {
+        background-color: #007bff;
+        color: white;
+        padding: 10px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Cybersecurité Tip du Jour</h1>
+    </header>
+    <div class="container">
+      <p id="tip"></p>
+      <button onclick="getTip()">Obtenir un tip</button>
+      <button onclick="copyTip()">Copier le tip</button>
+      <button onclick="shareOnTwitter()">Partager sur Twitter</button>
+    </div>
+    <footer>
+      <p>Fait avec amour par Djefferson Saintilus | 2023</p>
+    </footer>
+
+    <script>
+      async function getTip() {
+        const apiKey = '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';
+        const response = await fetch(`https://api.openai.com/v1/engines/davinci-codex/completions?prompt=Cybersecurity tip&max_tokens=60&n=1`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`
+          },
+          method: 'POST'
+        });
+        const data = await response.json();
+        const tip = data.choices[0].text.trim();
+        document.getElementById("tip").innerHTML = tip;
+      }
+
+      function copyTip() {
+        const tip = document.getElementById("tip").innerHTML;
+        navigator.clipboard.writeText(tip);
+      }
+
+      function shareOnTwitter() {
+        const tip = document.getElementById("tip").innerHTML;
+        const tweet = `Cybersecurity Tip du Jour : ${tip}`;
+        const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweet)}`;
+        window.open(twitterUrl, '_blank');
+      }
+    </script>
+  </body>
+</html>
