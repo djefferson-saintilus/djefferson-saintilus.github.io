@@ -1,0 +1,5 @@
+User-agent: *
+
+Allow :/
+
+sitemap : https://djefferson-saintilus.github.io/sitemap.xml

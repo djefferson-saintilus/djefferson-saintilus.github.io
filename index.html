@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="google-site-verification" content="YVOT3GGfIjgW4GR4GKgy5Hbxl5_1KqwRvOyhpAGd68g" />
-  <title>Penetration Tester Portfolio</title>
+  <title>Djefferson Saintilus - Penetration Tester Portfolio</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <style>
     body {
@@ -54,130 +55,157 @@
       background-color: #007bff;
       color: #fff;
     }
+        /* Add this style to make the navigation bar sticky at the top */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+        /* Add background color and box shadow for the sticky navigation bar */
+    .navbar.sticky {
+      background-color: #fff; /* You can change the background color as needed */
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Adjust the box shadow as needed */
+    }
+/* Custom footer styles */
+.custom-footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #f8f9fa;
+  text-align: center;
+  padding: 10px 0;
+}
+
+
   </style>
+  <meta name="description" content="Explore the portfolio of Djefferson Saintilus, a Penetration Tester and Technical Security Consultant. View CV, projects, and more.">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </head>
 <body>
-<img src="https://res.cloudinary.com/djkdf0umr/image/upload/v1616695066/foto_profil/kal_zit3ck.png" alt="Your Name" class="profile-pic">
 
-<center><h1>Penetration Tester Portfolio</h1></center>
+<img src="https://res.cloudinary.com/djkdf0umr/image/upload/v1616695066/foto_profil/kal_zit3ck.png" alt="Your Name" class="profile-pic img-fluid">
 
-<div class="menu">
-  <a id='cv-link' href="#" onclick="showCV()">CV</a>
-  <a id='projects-link' href="#" onclick="showProjects()">Projects</a>
-  <a href="./cybertip" onclick="showProjects()">CyberTips</a>
-</div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Penetration Tester Portfolio</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="#" onclick="showCV()">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#" onclick="showProjects()">Projects</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#" onclick="showTips()">CyberTips</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+</br>
 
+
+<div class="container">
   <div id="cv-section" class="section">
-    <h2>CV</h2>
-    <p>
-      <strong>Contact Information</strong><br>
-      Phone: +18295040436 (Mobile)<br>
-      Email: kylejeffleo@gmail.com<br>
-      Name: Djefferson Saintilus<br>
-      Role: Penetration Tester / Consultant Technical Security
-    </p>
-    <p>
-      <strong>Summary</strong><br>
-I am Djefferson Saintilus. I'm a technical security consultant, my bad I don't have a job yet, I used to participate in CTF quite a while, and have good score, like picoCTF, someone else on HackTheBox and TryHackMe, but my purpose was and is just to learn and grow my skills and experience in this field. The team usually participate with, always had a lot of fun by doing them.
+    <div class="row">
+      <div class="col-md-6" style="padding-bottom: 30px ;">
+        <div style="text-align: center;">
+          <h2>Welcome,</h2>
+          <p>
+            <strong>Contact Information</strong><br>
+            Phone: +18295040436 (Mobile)<br>
+            Email: kylejeffleo@gmail.com<br>
+            Name: Djefferson Saintilus<br>
+            Nationality: HAITIAN
+          </p>
+          <a href="./DjeffersonSaintilusResume.pdf">Download CV here</a>
+        </div>
+      </div>
 
-I come from a French-speaking community as a technical security consultant, I'm Haitian. I make content about security and hacking on my blog (Hackbookin), and I used to share my knowledge like a content creator on YouTube (Terlinux), and I have a french community talking about hacking and security, it's like 1.5k people on telegram messenger, I wrote an ebook in french about termux, an android emulator, it was really appreciated by my community, about 20k read, I published it in 2019 when I was in high school (bachelor), . ... in short, my experience in this field is quite medium, but I still learn every day on Tryhackme, a web platform to learn about cybersecurity, my profile name is zorkalel, and I have some certifications in information security and hacking, by the way, I'm just starting a university career in computer science. I'm a programmer in Python and PHP, I wrote some basic program in Python like port scanning and so on ... in PHP I worked on a web vulnerability project called SWAV, my personal project. In conclusion, I have a lot of hard skills in the IT field, and I really appreciate work teaming and discipline, I speak French, Haitian Creole, Spanish, and English, so feel free to contact me.
-
-    </p>
-    <p>
-      <strong>Languages</strong><br>
-      - Spanish: Intermediate<br>
-      - English: Professional Working Proficiency<br>
-      - Creole: Native or Bilingual<br>
-      - French: Native or Bilingual
-    </p>
-    <p>
-      <strong>Certifications</strong><br>
-      - Offensive Penetration Testing (Cybrary)
-    </p>
-    <p>
-      <strong>Experience</strong><br>
-      KWENPAM<br>
-      Penetration Tester<br>
-      March 2018 - March 2022<br>
-      Port-au-Prince, Haiti<br>
-      - Conducting web application security evaluations using the OWASP methodology<br>
-      - Providing advice on best practices for developers<br>
-      - Working with an e-commerce-focused small enterprise
-    </p>
-  </div>
-
-
-<div id="projects-section" class="section" style="display: none;">
-  <h2>Projects</h2>
-  <div class="row">
-    <div class="col-md-6">
-      <div class="project">
-        <h3>1. Password Manager Analyzer (PASM)</h3>
-        <p>Protect your password, protect your digital life! In an increasingly digital world, keeping our online accounts secure is of paramount importance. That's why I've developed a Python-based Password Manager Security Analyzer to help you manage and safeguard your passwords effectively.</p>
-        <a href="https://github.com/djefferson-saintilus/pasm">More details...</a>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="project">
-        <h3>2. gtoSearch</h3>
-        <p>GTFOBins Search is a command-line tool that allows you to easily search GTFOBins (https://gtfobins.github.io) for privilege escalation and bypass techniques using various Unix-like binaries.</p>
-        <a href="https://github.com/djefferson-saintilus/gtosearch">More details...</a>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="project">
-        <h3>3. NoteMaster - Note-Taking Application</h3>
-        <p>NoteMaster is a powerful note-taking application built with PyQt5, offering a user-friendly interface for creating, editing, and organizing notes effortlessly. The application provides a range of features to enhance productivity and customization, making it suitable for both personal and professional note-taking needs.</p>
-        <a href="https://github.com/djefferson-saintilus/NoteMaster">More details...</a>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="project">
-        <h3>4. SpyPro - The Automate</h3>
-        <p>SpyPro automates the pentesting process from reconnaissance to target exploitation. It is specifically designed for CTF challenges and has an educational purpose. Currently, it supports Linux boxes, and I recommend keeping a manual note-taking process to produce your final report. I follow the PTES methodology. The tool is in English, and it utilizes the Kali Linux database to load most of the tools.</p>
-        <a href="https://github.com/djefferson-saintilus/spypro">More details...</a>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="project">
-        <h3>5. File Integrity Checker</h3>
-        <p>This script provides a simple command-line tool for calculating the MD5 and SHA-256 hashes of a file. It utilizes the hashlib library in Python to perform the hash calculations. The script takes a single argument, which is the path to the file for which you want to calculate the hashes. After processing the file, it prints the MD5 and SHA-256 hashes to the console.</p>
-        <a href="https://github.com/djefferson-saintilus/fileIntegrityChecker">More details...</a>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="project">
-        <h3>6. SWAV - The Web Vulnerable</h3>
-        <p>SWAV is a project started in 2022 by Secure Society with Djefferson Saintilus as the main dev, the SWAV project is a vulnerable web application aiming to help web devs to discover common web vulnerabilities. It's also a great educational tool for anyone interested in web security and penetration testing.</p>
-        <a href="https://github.com/secure-society/swav">More details...</a>
+      <div class="col-md-6">
+        <div class="card" style="width: 18rem; text-align: center; align-content: center;">
+          <img src="https://tryhackme-badges.s3.amazonaws.com/zorkalel.png" alt="TryHackMe" class="card-img-top">
+          <div class="card-body">
+            <h5 class="card-title">TryHackMe Badge</h5>
+            <p class="card-text">TryHackMe is a no-cost online cyber security education platform. This badge presents my commitment to the platform and my ranking among millions of users.</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<script>
-function showCV() {
-  document.getElementById('cv-section').style.display = 'block';
-  document.getElementById('projects-section').style.display = 'none';
-  setActiveLink('cv-link');
-}
 
-function showProjects() {
-  document.getElementById('cv-section').style.display = 'none';
-  document.getElementById('projects-section').style.display = 'block';
-  setActiveLink('projects-link');
-}
+  <div id="projects-section" class="section" style="display: none;">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="project">
+          <h3>1. Password Manager Analyzer (PASM)</h3>
+          <p>Protect your password, protect your digital life! In an increasingly digital world, keeping our online accounts secure is of paramount importance. That's why I've developed a Python-based Password Manager Security Analyzer to help you manage and safeguard your passwords effectively.</p>
+          <a href="https://github.com/djefferson-saintilus/pasm">More details...</a>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="project">
+          <h3>2. gtoSearch</h3>
+          <p>GTFOBins Search is a command-line tool that allows you to easily search GTFOBins (https://gtfobins.github.io) for privilege escalation and bypass techniques using various Unix-like binaries.</p>
+          <a href="https://github.com/djefferson-saintilus/gtosearch">More details...</a>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="project">
+          <h3>3. NoteMaster - Note-Taking Application</h3>
+          <p>NoteMaster is a powerful note-taking application built with PyQt5, offering a user-friendly interface for creating, editing, and organizing notes effortlessly. The application provides a range of features to enhance productivity and customization, making it suitable for both personal and professional note-taking needs.</p>
+          <a href="https://github.com/djefferson-saintilus/NoteMaster">More details...</a>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="project">
+          <h3>4. SpyPro - The Automate</h3>
+          <p>SpyPro automates the pentesting process from reconnaissance to target exploitation. It is specifically designed for CTF challenges and has an educational purpose. Currently, it supports Linux boxes, and I recommend keeping a manual note-taking process to produce your final report. I follow the PTES methodology. The tool is in English, and it utilizes the Kali Linux database to load most of the tools.</p>
+          <a href="https://github.com/djefferson-saintilus/spypro">More details...</a>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="project">
+          <h3>5. File Integrity Checker</h3>
+          <p>This script provides a simple command-line tool for calculating the MD5 and SHA-256 hashes of a file. It utilizes the hashlib library in Python to perform the hash calculations. The script takes a single argument, which is the path to the file for which you want to calculate the hashes. After processing the file, it prints the MD5 and SHA-256 hashes to the console.</p>
+          <a href="https://github.com/djefferson-saintilus/fileIntegrityChecker">More details...</a>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="project">
+          <h3>6. SWAV - The Web Vulnerable</h3>
+          <p>SWAV is a project started in 2022 by Secure Society with Djefferson Saintilus as the main dev, the SWAV project is a vulnerable web application aiming to help web devs to discover common web vulnerabilities. It's also a great educational tool for anyone interested in web security and penetration testing.</p>
+          <a href="https://github.com/secure-society/swav">More details...</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
-function setActiveLink(activeLinkId) {
-  var menuLinks = document.getElementsByClassName('menu')[0].getElementsByTagName('a');
-  for (var i = 0; i < menuLinks.length; i++) {
-    if (menuLinks[i].id === activeLinkId) {
-      menuLinks[i].classList.add('active');
-    } else {
-      menuLinks[i].classList.remove('active');
-    }
-  }
-}
-</script>
+  <div id="cyberTipsContainer" style="display: none;">
+    <h3>Tips of the Day:</h3>
+    <p id="cyberTip"></p>
+  </div>
+
+
+</div>
+
+<!-- Footer -->
+<footer class="py-3 bg-light custom-footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <p class="text-center">&copy; 2023 - Djefferson Saintilus - All rights reserved</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
 </body>
 </html>
