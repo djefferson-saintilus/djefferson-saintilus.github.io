@@ -1,5 +1,0 @@
-Avoid opening suspicious emails.
-Keep hardware up-to-date.
-Use antivirus and antimalware.
-Never use the same password for all of your accounts.
-Apply multi-factor authentication .
