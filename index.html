@@ -1,24 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="google-site-verification" content="YVOT3GGfIjgW4GR4GKgy5Hbxl5_1KqwRvOyhpAGd68g" />
-  <title>Djefferson Saintilus - Penetration Tester Portfolio</title>
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZXXSWL8D5T"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <meta name="author" content="Djefferson Saintilus">
+  <meta name="description" content="Explore the portfolio of Djefferson Saintilus, a Penetration Tester and Technical Security Consultant. View CV, projects, and more.">
+  <title>Djefferson Saintilus | Penetration Tester Portfolio</title>
 
-  gtag('config', 'G-ZXXSWL8D5T');
-</script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 20px;
+      padding-bottom: 60px;
+      transition: background-color 0.3s, color 0.3s;
     }
     .profile-pic {
       display: block;
@@ -31,196 +25,169 @@
     }
     .section {
       margin-bottom: 50px;
+      display: none;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
     }
-    .section h2 {
-      margin-bottom: 20px;
+    .section.active {
+      display: block;
+      opacity: 1;
     }
-    .section p {
-      margin-bottom: 10px;
-    }
-    .project {
-      margin-bottom: 30px;
-    }
-    .project h3 {
-      margin-bottom: 10px;
-    }
-    .project p {
-      margin-bottom: 5px;
-    }
-    .menu {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-    .menu a {
-      display: inline-block;
-      padding: 5px 10px;
-      margin: 0 5px;
-      background-color: #f1f1f1;
-      text-decoration: none;
-      color: #333;
-      border-radius: 3px;
-    }
-    .menu a.active {
-      background-color: #007bff;
-      color: #fff;
-    }
-        /* Add this style to make the navigation bar sticky at the top */
     .navbar {
       position: sticky;
       top: 0;
       z-index: 100;
     }
-        /* Add background color and box shadow for the sticky navigation bar */
-    .navbar.sticky {
-      background-color: #fff; /* You can change the background color as needed */
-      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Adjust the box shadow as needed */
+    footer {
+      background-color: #f8f9fa;
+      text-align: center;
+      padding: 10px 0;
+      transition: background-color 0.3s, color 0.3s;
     }
-/* Custom footer styles */
-.custom-footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background-color: #f8f9fa;
-  text-align: center;
-  padding: 10px 0;
-}
-
-
+    .dark-mode {
+      background-color: #121212;
+      color: #f1f1f1;
+    }
+    .dark-mode footer {
+      background-color: #1e1e1e;
+      color: #ccc;
+    }
+    .btn-dark-toggle {
+      cursor: pointer;
+    }
   </style>
-  <meta name="description" content="Explore the portfolio of Djefferson Saintilus, a Penetration Tester and Technical Security Consultant. View CV, projects, and more.">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
 </head>
 <body>
 
-<img src="https://res.cloudinary.com/djkdf0umr/image/upload/v1616695066/foto_profil/kal_zit3ck.png" alt="Your Name" class="profile-pic img-fluid">
+<img src="https://res.cloudinary.com/djkdf0umr/image/upload/v1616695066/foto_profil/kal_zit3ck.png"
+     alt="Profile picture of Djefferson Saintilus"
+     class="profile-pic img-fluid mt-3"
+     loading="lazy">
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">Penetration Tester Portfolio</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+  <a class="navbar-brand" href="#">Portfolio</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav ml-auto">
-      <li class="nav-item">
-        <a class="nav-link" href="#" onclick="showCV()">Home</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#" onclick="showProjects()">Projects</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#" onclick="showTips()">CyberTips</a>
-      </li>
+      <li class="nav-item"><a class="nav-link px-3" href="#" onclick="showSection('cv-section')">Home</a></li>
+      <li class="nav-item"><a class="nav-link px-3" href="#" onclick="showSection('projects-section')">Projects</a></li>
+      <li class="nav-item"><a class="nav-link px-3" href="#" onclick="showSection('cyberTipsContainer')">CyberTips</a></li>
+      <li class="nav-item"><span class="nav-link btn-dark-toggle" onclick="toggleDarkMode()">🌙</span></li>
     </ul>
   </div>
 </nav>
-</br>
-
 
 <div class="container">
-  <div id="cv-section" class="section">
+  <!-- CV Section -->
+  <div id="cv-section" class="section active">
     <div class="row">
-      <div class="col-md-6 pb-4">
-        <div style="text-align: center;">
-          <h2>Welcome,</h2>
-          <p>
-            <strong>Contact Information</strong><br>
-            Phone: +18295040436 (Mobile)<br>
-            Email: kylejeffleo@gmail.com<br>
-            Name: Djefferson Saintilus<br>
-            Nationality: HAITIAN
-          </p>
-          <a href="./DjeffersonSaintilusResume.pdf">Download CV here</a>
-        </div>
+      <div class="col-12 col-md-6 pb-4 text-center">
+        <h2 class="mb-3">Welcome,</h2>
+        <p>
+          <strong>Contact Information</strong><br>
+          Phone: +18295040436 (Mobile)<br>
+          Email: kylejeffleo@gmail.com<br>
+          Name: Djefferson Saintilus<br>
+          Nationality: HAITIAN
+        </p>
+        <a href="./DjeffersonSaintilusResume.pdf" class="btn btn-primary mt-2">Download CV</a>
       </div>
-<br><br>
-      <div class="col-md-6 pb-4">
-        <div class="card mx-auto" style="width: 20rem;">
-          <img src="https://tryhackme-badges.s3.amazonaws.com/zorkalel.png" alt="TryHackMe" class="card-img-top">
+      <div class="col-12 col-md-6 pb-4">
+        <div class="card mx-auto" style="max-width: 20rem;">
+          <img src="https://tryhackme-badges.s3.amazonaws.com/zorkalel.png"
+               alt="TryHackMe badge"
+               class="card-img-top" loading="lazy">
           <div class="card-body">
             <h5 class="card-title">TryHackMe Badge</h5>
-            <p class="card-text">TryHackMe is a no-cost online cyber security education platform. This badge presents my commitment to the platform and my ranking among millions of users.</p>
+            <p class="card-text">This badge reflects my ranking and commitment to continuous learning.</p>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-
-
-  <div id="projects-section" class="section" style="display: none;">
+  <!-- Projects Section -->
+  <div id="projects-section" class="section">
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-12 col-md-6">
         <div class="project">
           <h3>1. Password Manager Analyzer (PASM)</h3>
-          <p>Protect your password, protect your digital life! In an increasingly digital world, keeping our online accounts secure is of paramount importance. That's why I've developed a Python-based Password Manager Security Analyzer to help you manage and safeguard your passwords effectively.</p>
+          <p>Python-based tool to analyze password manager security.</p>
           <a href="https://github.com/djefferson-saintilus/pasm">More details...</a>
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col-12 col-md-6">
         <div class="project">
           <h3>2. gtoSearch</h3>
-          <p>GTFOBins Search is a command-line tool that allows you to easily search GTFOBins (https://gtfobins.github.io) for privilege escalation and bypass techniques using various Unix-like binaries.</p>
+          <p>CLI tool to search GTFOBins for privilege escalation techniques.</p>
           <a href="https://github.com/djefferson-saintilus/gtosearch">More details...</a>
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col-12 col-md-6">
         <div class="project">
-          <h3>3. NoteMaster - Note-Taking Application</h3>
-          <p>NoteMaster is a powerful note-taking application built with PyQt5, offering a user-friendly interface for creating, editing, and organizing notes effortlessly. The application provides a range of features to enhance productivity and customization, making it suitable for both personal and professional note-taking needs.</p>
+          <h3>3. NoteMaster</h3>
+          <p>PyQt5 note-taking application with advanced organization features.</p>
           <a href="https://github.com/djefferson-saintilus/NoteMaster">More details...</a>
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col-12 col-md-6">
         <div class="project">
           <h3>4. SpyPro - The Automate</h3>
-          <p>SpyPro automates the pentesting process from reconnaissance to target exploitation. It is specifically designed for CTF challenges and has an educational purpose. Currently, it supports Linux boxes, and I recommend keeping a manual note-taking process to produce your final report. I follow the PTES methodology. The tool is in English, and it utilizes the Kali Linux database to load most of the tools.</p>
+          <p>Automates pentesting workflow following PTES methodology.</p>
           <a href="https://github.com/djefferson-saintilus/spypro">More details...</a>
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col-12 col-md-6">
         <div class="project">
           <h3>5. File Integrity Checker</h3>
-          <p>This script provides a simple command-line tool for calculating the MD5 and SHA-256 hashes of a file. It utilizes the hashlib library in Python to perform the hash calculations. The script takes a single argument, which is the path to the file for which you want to calculate the hashes. After processing the file, it prints the MD5 and SHA-256 hashes to the console.</p>
+          <p>Command-line tool for MD5 and SHA-256 file hashing.</p>
           <a href="https://github.com/djefferson-saintilus/fileIntegrityChecker">More details...</a>
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col-12 col-md-6">
         <div class="project">
           <h3>6. SWAV - The Web Vulnerable</h3>
-          <p>SWAV is a project started in 2022 by Secure Society with Djefferson Saintilus as the main dev, the SWAV project is a vulnerable web application aiming to help web devs to discover common web vulnerabilities. It's also a great educational tool for anyone interested in web security and penetration testing.</p>
+          <p>Vulnerable web app for learning and testing web security flaws.</p>
           <a href="https://github.com/secure-society/swav">More details...</a>
         </div>
       </div>
     </div>
   </div>
 
-  <div id="cyberTipsContainer" style="display: none;" class="jumbotron">
-    <h3 class="display-4">Tips of the Day:</h3>
-  <hr class="my-4">
-  <blockquote class="blockquote text-center">
-    <p class="lead" id="cyberTip">Your cybersecurity tip goes here.</p>
-    <footer class="blockquote-footer">Stay safe online and protect your data!</footer>
-  </blockquote>
-  </div>
-
-
-</div>
-
-<!-- Footer -->
-<footer class="py-3 bg-light custom-footer">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <p class="text-center">&copy; 2023 - Djefferson Saintilus - All rights reserved</p>
-      </div>
+  <!-- Cyber Tips Section -->
+  <div id="cyberTipsContainer" class="section">
+    <div class="jumbotron">
+      <h3 class="display-4">Tips of the Day:</h3>
+      <hr class="my-4">
+      <blockquote class="blockquote text-center">
+        <p class="lead" id="cyberTip">Your cybersecurity tip goes here.</p>
+        <footer class="blockquote-footer">Stay safe online and protect your data!</footer>
+      </blockquote>
     </div>
   </div>
+</div>
+
+<footer>
+  <p class="mb-0">&copy; 2023 - Djefferson Saintilus - All rights reserved</p>
 </footer>
 
-<script type="text/javascript" src="./tips.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+  // Smooth fade section switch
+  function showSection(sectionId) {
+    $('.section.active').removeClass('active');
+    $('#' + sectionId).addClass('active');
+  }
 
+  // Dark mode toggle
+  function toggleDarkMode() {
+    $('body').toggleClass('dark-mode');
+  }
+</script>
+<script src="./tips.js" defer></script>
 </body>
 </html>
