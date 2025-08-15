@@ -1,193 +1,229 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="author" content="Djefferson Saintilus">
-  <meta name="description" content="Explore the portfolio of Djefferson Saintilus, a Penetration Tester and Technical Security Consultant. View CV, projects, and more.">
-  <title>Djefferson Saintilus | Penetration Tester Portfolio</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Djefferson Saintilus - Penetration Tester Portfolio</title>
+<meta name="description" content="Portfolio of Djefferson Saintilus, Penetration Tester and Security Consultant. Projects, CV, Cyber Tips, and contact info.">
 
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding-bottom: 60px;
-      transition: background-color 0.3s, color 0.3s;
-    }
-    .profile-pic {
-      display: block;
-      margin: 0 auto;
-      width: 200px;
-      height: 200px;
-      border-radius: 50%;
-      object-fit: cover;
-      object-position: center;
-    }
-    .section {
-      margin-bottom: 50px;
-      display: none;
-      opacity: 0;
-      transition: opacity 0.5s ease-in-out;
-    }
-    .section.active {
-      display: block;
-      opacity: 1;
-    }
-    .navbar {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    footer {
-      background-color: #f8f9fa;
-      text-align: center;
-      padding: 10px 0;
-      transition: background-color 0.3s, color 0.3s;
-    }
-    .dark-mode {
-      background-color: #121212;
-      color: #f1f1f1;
-    }
-    .dark-mode footer {
-      background-color: #1e1e1e;
-      color: #ccc;
-    }
-    .btn-dark-toggle {
-      cursor: pointer;
-    }
-  </style>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZXXSWL8D5T"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-ZXXSWL8D5T');
+</script>
+
+<!-- Bootstrap 5 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- AOS Animation Library -->
+<link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+<style>
+body { font-family: 'Arial', sans-serif; background: #f4f7f9; margin: 0; padding-top: 70px; }
+.navbar { background: #1f2937; }
+.navbar .nav-link { color: #f4f4f4; margin-right: 15px; }
+.navbar .nav-link.active { color: #0ea5e9; }
+.profile-section { text-align: center; padding: 40px 20px; }
+.profile-pic { width: 180px; height: 180px; border-radius: 50%; object-fit: cover; margin-bottom: 20px; border: 4px solid #0ea5e9; }
+.section-title { text-align: center; margin-bottom: 40px; color: #1f2937; }
+.card-custom { border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); transition: transform 0.3s; }
+.card-custom:hover { transform: translateY(-5px); }
+.progress { height: 20px; margin-bottom: 15px; }
+.footer { background: #1f2937; color: #f4f4f4; text-align: center; padding: 20px 0; }
+.filter-btn { margin: 5px; }
+</style>
 </head>
 <body>
 
-<img src="https://res.cloudinary.com/djkdf0umr/image/upload/v1616695066/foto_profil/kal_zit3ck.png"
-     alt="Profile picture of Djefferson Saintilus"
-     class="profile-pic img-fluid mt-3"
-     loading="lazy">
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">Portfolio</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav ml-auto">
-      <li class="nav-item"><a class="nav-link px-3" href="#" onclick="showSection('cv-section')">Home</a></li>
-      <li class="nav-item"><a class="nav-link px-3" href="#" onclick="showSection('projects-section')">Projects</a></li>
-      <li class="nav-item"><a class="nav-link px-3" href="#" onclick="showSection('cyberTipsContainer')">CyberTips</a></li>
-      <li class="nav-item"><span class="nav-link btn-dark-toggle" onclick="toggleDarkMode()">🌙</span></li>
-    </ul>
+<!-- Navbar -->
+<nav class="navbar fixed-top navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand text-white" href="#">Djefferson Saintilus</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="#about">About Me</a></li>
+        <li class="nav-item"><a class="nav-link" href="#skills">Skills</a></li>
+        <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
+        <li class="nav-item"><a class="nav-link" href="#tips">Cyber Tips</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+      </ul>
+    </div>
   </div>
 </nav>
 
-<div class="container">
-  <!-- CV Section -->
-  <div id="cv-section" class="section active">
-    <div class="row">
-      <div class="col-12 col-md-6 pb-4 text-center">
-        <h2 class="mb-3">Welcome,</h2>
-        <p>
-          <strong>Contact Information</strong><br>
-          Phone: +18295040436 (Mobile)<br>
-          Email: kylejeffleo@gmail.com<br>
-          Name: Djefferson Saintilus<br>
-          Nationality: HAITIAN
-        </p>
-        <a href="./DjeffersonSaintilusResume.pdf" class="btn btn-primary mt-2">Download CV</a>
+<!-- Profile Section -->
+<section id="home" class="profile-section" data-aos="fade-up">
+  <img src="https://res.cloudinary.com/djkdf0umr/image/upload/v1616695066/foto_profil/kal_zit3ck.png" alt="Profile Pic" class="profile-pic">
+  <h1>Djefferson Saintilus</h1>
+  <h5>Penetration Tester & Security Consultant</h5>
+  <p>Email: kylejeffleo@gmail.com | Phone: +18295040436</p>
+  <a href="./DjeffersonSaintilusResume.pdf" class="btn btn-primary mt-3">Download CV</a>
+</section>
+
+<!-- About Me Section -->
+<section id="about" class="container py-5" data-aos="fade-right">
+  <h2 class="section-title">About Me</h2>
+  <p>I am <strong>Djefferson Saintilus</strong>, a dedicated Penetration Tester and Technical Security Consultant. I specialize in ethical hacking, web & network security assessments, and forensic analysis.</p>
+  <div class="row">
+    <div class="col-md-6">
+      <h4>Experience</h4>
+      <ul>
+        <li>Web Penetration Tester at KWENPAM</li>
+        <li>Web Application Security Analyst at MaketPAMHT</li>
+      </ul>
+    </div>
+    <div class="col-md-6">
+      <h4>Education & Certifications</h4>
+      <ul>
+        <li>OSCP Training</li>
+        <li>Various Cybersecurity Certifications</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- Skills Section -->
+<section id="skills" class="container py-5" data-aos="fade-left">
+  <h2 class="section-title">Skills</h2>
+  <div class="row">
+    <div class="col-md-6">
+      <h5>Programming & Scripting</h5>
+      <div class="progress"><div class="progress-bar bg-primary" style="width: 90%">Python</div></div>
+      <div class="progress"><div class="progress-bar bg-success" style="width: 80%">PHP</div></div>
+      <div class="progress"><div class="progress-bar bg-info" style="width: 75%">Bash</div></div>
+    </div>
+    <div class="col-md-6">
+      <h5>Security Tools</h5>
+      <div class="progress"><div class="progress-bar bg-warning" style="width: 85%">Burp Suite</div></div>
+      <div class="progress"><div class="progress-bar bg-danger" style="width: 80%">Metasploit</div></div>
+      <div class="progress"><div class="progress-bar bg-secondary" style="width: 90%">Kali Linux</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Projects Section -->
+<section id="projects" class="container py-5" data-aos="fade-up">
+  <h2 class="section-title">Projects</h2>
+
+  <div class="text-center mb-4">
+    <button class="btn btn-outline-primary filter-btn" data-filter="all">All</button>
+    <button class="btn btn-outline-primary filter-btn" data-filter="python">Python</button>
+    <button class="btn btn-outline-primary filter-btn" data-filter="pentest">Pentest</button>
+  </div>
+
+  <div class="row g-4 project-card">
+    <div class="col-md-4" data-category="pentest">
+      <div class="card card-custom">
+        <div class="card-body">
+          <h5 class="card-title">TryHackMe Badge</h5>
+          <p class="card-text">Practical cybersecurity learning challenges.</p>
+        </div>
       </div>
-      <div class="col-12 col-md-6 pb-4">
-        <div class="card mx-auto" style="max-width: 20rem;">
-          <img src="https://tryhackme-badges.s3.amazonaws.com/zorkalel.png"
-               alt="TryHackMe badge"
-               class="card-img-top" loading="lazy">
-          <div class="card-body">
-            <h5 class="card-title">TryHackMe Badge</h5>
-            <p class="card-text">This badge reflects my ranking and commitment to continuous learning.</p>
-          </div>
+    </div>
+    <div class="col-md-4" data-category="python">
+      <div class="card card-custom">
+        <div class="card-body">
+          <h5 class="card-title">Password Manager Analyzer (PASM)</h5>
+          <p class="card-text">Python-based password analysis tool.</p>
+          <a href="https://github.com/djefferson-saintilus/pasm" class="btn btn-outline-primary btn-sm">Details</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4" data-category="pentest">
+      <div class="card card-custom">
+        <div class="card-body">
+          <h5 class="card-title">gtoSearch</h5>
+          <p class="card-text">Command-line GTFOBins search tool.</p>
+          <a href="https://github.com/djefferson-saintilus/gtosearch" class="btn btn-outline-primary btn-sm">Details</a>
         </div>
       </div>
     </div>
   </div>
+</section>
 
-  <!-- Projects Section -->
-  <div id="projects-section" class="section">
-    <div class="row">
-      <div class="col-12 col-md-6">
-        <div class="project">
-          <h3>1. Password Manager Analyzer (PASM)</h3>
-          <p>Python-based tool to analyze password manager security.</p>
-          <a href="https://github.com/djefferson-saintilus/pasm">More details...</a>
-        </div>
-      </div>
-      <div class="col-12 col-md-6">
-        <div class="project">
-          <h3>2. gtoSearch</h3>
-          <p>CLI tool to search GTFOBins for privilege escalation techniques.</p>
-          <a href="https://github.com/djefferson-saintilus/gtosearch">More details...</a>
-        </div>
-      </div>
-      <div class="col-12 col-md-6">
-        <div class="project">
-          <h3>3. NoteMaster</h3>
-          <p>PyQt5 note-taking application with advanced organization features.</p>
-          <a href="https://github.com/djefferson-saintilus/NoteMaster">More details...</a>
-        </div>
-      </div>
-      <div class="col-12 col-md-6">
-        <div class="project">
-          <h3>4. SpyPro - The Automate</h3>
-          <p>Automates pentesting workflow following PTES methodology.</p>
-          <a href="https://github.com/djefferson-saintilus/spypro">More details...</a>
-        </div>
-      </div>
-      <div class="col-12 col-md-6">
-        <div class="project">
-          <h3>5. File Integrity Checker</h3>
-          <p>Command-line tool for MD5 and SHA-256 file hashing.</p>
-          <a href="https://github.com/djefferson-saintilus/fileIntegrityChecker">More details...</a>
-        </div>
-      </div>
-      <div class="col-12 col-md-6">
-        <div class="project">
-          <h3>6. SWAV - The Web Vulnerable</h3>
-          <p>Vulnerable web app for learning and testing web security flaws.</p>
-          <a href="https://github.com/secure-society/swav">More details...</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Cyber Tips Section -->
-  <div id="cyberTipsContainer" class="section">
-    <div class="jumbotron">
-      <h3 class="display-4">Tips of the Day:</h3>
-      <hr class="my-4">
-      <blockquote class="blockquote text-center">
-        <p class="lead" id="cyberTip">Your cybersecurity tip goes here.</p>
-        <footer class="blockquote-footer">Stay safe online and protect your data!</footer>
+<!-- Cyber Tips Section -->
+<section id="tips" class="container py-5" data-aos="fade-right">
+  <h2 class="section-title">Cyber Tips</h2>
+  <div class="card text-center">
+    <div class="card-body">
+      <blockquote class="blockquote mb-0">
+        <p id="cyberTip">Always use unique passwords for each account and enable two-factor authentication.</p>
+        <footer class="blockquote-footer">Stay safe online!</footer>
       </blockquote>
     </div>
   </div>
-</div>
+</section>
 
-<footer>
-  <p class="mb-0">&copy; 2023 - Djefferson Saintilus - All rights reserved</p>
+<!-- Contact Section -->
+<section id="contact" class="container py-5" data-aos="fade-left">
+  <h2 class="section-title">Contact Me</h2>
+  <p>Email: kylejeffleo@gmail.com | Phone: +18295040436</p>
+  <form id="contactForm">
+    <div class="mb-3">
+      <label class="form-label">Name</label>
+      <input type="text" class="form-control" id="name" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Email</label>
+      <input type="email" class="form-control" id="email" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Message</label>
+      <textarea class="form-control" id="message" rows="4" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Send Message</button>
+  </form>
+  <div id="formMsg" class="mt-3"></div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  &copy; 2025 Djefferson Saintilus - All Rights Reserved
 </footer>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 <script>
-  // Smooth fade section switch
-  function showSection(sectionId) {
-    $('.section.active').removeClass('active');
-    $('#' + sectionId).addClass('active');
-  }
+AOS.init(); // initialize scroll animations
 
-  // Dark mode toggle
-  function toggleDarkMode() {
-    $('body').toggleClass('dark-mode');
-  }
+// Cyber tips rotation
+const tips = [
+  "Always use strong, unique passwords.",
+  "Enable two-factor authentication on all accounts.",
+  "Keep your software and OS up-to-date.",
+  "Beware of phishing emails and suspicious links."
+];
+let tipIndex = 0;
+setInterval(() => {
+  document.getElementById('cyberTip').innerText = tips[tipIndex];
+  tipIndex = (tipIndex + 1) % tips.length;
+}, 7000);
+
+// Project filtering
+const filterBtns = document.querySelectorAll('.filter-btn');
+const projects = document.querySelectorAll('.project-card .col-md-4');
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const filter = btn.getAttribute('data-filter');
+    projects.forEach(p => {
+      p.style.display = (filter === 'all' || p.getAttribute('data-category') === filter) ? 'block' : 'none';
+    });
+  });
+});
+
+// Contact form simulation
+document.getElementById('contactForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  document.getElementById('formMsg').innerHTML = "<div class='alert alert-success'>Message sent! I will contact you soon.</div>";
+  this.reset();
+});
 </script>
-<script src="./tips.js" defer></script>
 </body>
 </html>
