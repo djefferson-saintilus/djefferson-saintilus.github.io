@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Djefferson Saintilus — Biography & Portfolio</title>
+<meta name="color-scheme" content="light dark" />
+<style>
+  /* ====== Design Tokens (defaults) ====== */
+  :root{
+    --bg:#f8f9fa; --panel:#ffffff; --text:#202122; --muted:#6a6d70; --hair:#dfe1e3;
+    --link:#0645ad; --accent:#2d6cdf; --accent-2:#1b4fb4;
+    --radius:14px; --radius-sm:10px; --shadow:0 6px 18px rgba(0,0,0,.06);
+  }
+
+  /* Honor system preference (used as initial palette only) */
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1f2023; --panel:#272a2f; --text:#e8e9eb; --muted:#a9aeb3; --hair:#383c42;
+      --link:#79aaff; --accent:#4c7dff; --accent-2:#315ed7; --shadow:0 10px 28px rgba(0,0,0,.35);
+    }
+  }
+
+  /* ====== Manual theme overrides (ensure toggle works) ====== */
+  .light{
+    --bg:#f8f9fa; --panel:#ffffff; --text:#202122; --muted:#6a6d70; --hair:#dfe1e3;
+    --link:#0645ad; --accent:#2d6cdf; --accent-2:#1b4fb4; --shadow:0 6px 18px rgba(0,0,0,.06);
+  }
+  .dark{
+    --bg:#1f2023; --panel:#272a2f; --text:#e8e9eb; --muted:#a9aeb3; --hair:#383c42;
+    --link:#79aaff; --accent:#4c7dff; --accent-2:#315ed7; --shadow:0 10px 28px rgba(0,0,0,.35);
+  }
+
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; font:16px/1.65 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;
+    background:var(--bg); color:var(--text); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+  }
+  img{max-width:100%; height:auto; display:block}
+  a{color:var(--link); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* ====== Header / Nav ====== */
+  header{
+    position:sticky; top:0; z-index:60;
+    background:linear-gradient(180deg,var(--accent),var(--accent-2));
+    color:#fff; box-shadow:0 2px 10px rgba(0,0,0,.15);
+  }
+  .head-wrap{
+    max-width:1180px; margin:0 auto; padding:14px 16px;
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+  }
+  .brand h1{margin:0; font-size:clamp(1.25rem,2vw+1rem,2rem); line-height:1.2}
+  .brand p{margin:2px 0 0; opacity:.95}
+  .actions{display:flex; align-items:center; gap:10px}
+  .btn{
+    appearance:none; cursor:pointer; border-radius:999px; border:1px solid rgba(255,255,255,.35);
+    background:transparent; color:#fff; padding:.5rem .85rem; font-weight:600;
+  }
+  .btn:active{transform:translateY(1px)}
+  .hamburger{
+    display:none; width:44px; height:38px; border-radius:10px; border:1px solid rgba(255,255,255,.35);
+    background:transparent; position:relative;
+  }
+  .hamburger span,.hamburger::before,.hamburger::after{
+    content:""; position:absolute; left:10px; right:10px; height:2px; background:#fff; transition:transform .25s,opacity .2s;
+  }
+  .hamburger span{top:18px}
+  .hamburger::before{top:11px}
+  .hamburger::after{top:25px}
+  .hamburger[aria-expanded="true"]::before{transform:translateY(7px) rotate(45deg)}
+  .hamburger[aria-expanded="true"] span{opacity:0}
+  .hamburger[aria-expanded="true"]::after{transform:translateY(-7px) rotate(-45deg)}
+
+  /* ====== Layout ====== */
+  .layout{
+    max-width:1180px; margin:18px auto; padding:0 16px;
+    display:grid; grid-template-columns: 1fr minmax(280px,340px); gap:20px;
+  }
+  @media (max-width: 980px){ .layout{grid-template-columns:1fr} .hamburger{display:inline-block} }
+
+  /* ====== Main ====== */
+  main{background:var(--panel); border:1px solid var(--hair); border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden}
+  .content{padding:18px}
+  .section{padding:12px 10px 18px; border-top:1px solid var(--hair)}
+  .section:first-child{border-top:none}
+  h2{margin:.2rem 0 8px; padding-bottom:6px; border-bottom:1px solid var(--hair); font-size:1.22rem}
+
+  /* Fade-in on scroll (respects reduced motion) */
+  .reveal{opacity:0; transform:translateY(12px)}
+  .reveal.in{opacity:1; transform:none; transition:opacity .4s ease, transform .4s ease}
+  @media (prefers-reduced-motion: reduce){ .reveal,.reveal.in{opacity:1; transform:none} }
+
+  /* Collapsibles */
+  .collapsible{
+    display:flex; align-items:center; gap:8px; cursor:pointer; user-select:none;
+  }
+  .chev{inline-size:10px; block-size:10px; border-right:2px solid var(--muted); border-bottom:2px solid var(--muted); transform:rotate(-45deg); transition:transform .2s}
+  .collapsible[aria-expanded="true"] .chev{transform:rotate(45deg)}
+  .collapsible + .body{max-height:0; overflow:hidden; transition:max-height .28s ease}
+  .collapsible[aria-expanded="true"] + .body{max-height:900px}
+
+  /* ====== Infobox ====== */
+  aside.infobox{
+    background:var(--panel); border:1px solid var(--hair); border-radius:var(--radius); box-shadow:var(--shadow);
+    height:max-content; position:sticky; top:92px; overflow:hidden;
+  }
+  @media (max-width:980px){ aside.infobox{position:static} }
+  .ibox-head{padding:14px 16px; border-bottom:1px solid var(--hair);
+    background:linear-gradient(180deg,#f3f4f6,#e9ecef); color:var(--text)}
+  .ibox-photo{padding:14px 16px}
+  .ibox-photo img{border-radius:var(--radius-sm); border:1px solid var(--hair)}
+  .ibox-kv{padding:0 16px 16px; display:grid; gap:10px}
+  .ibox-kv dl{margin:0}
+  .ibox-kv dt{font-weight:700}
+  .ibox-kv dd{margin:0; color:var(--muted)}
+  .chips .chip{display:inline-block; padding:.18rem .55rem; border:1px solid var(--hair); border-radius:999px; background:rgba(0,0,0,.03); margin:2px 4px 0 0; font-size:.9rem}
+  .quick{display:flex; gap:8px; padding:0 16px 16px}
+  .quick a{flex:1 1 auto; text-align:center; border:1px solid var(--hair); border-radius:10px; padding:.5rem .6rem}
+  .quick a:hover{background:rgba(0,0,0,.04); text-decoration:none}
+
+  /* ====== In-page TOC ====== */
+  .toc{background:var(--panel); border:1px solid var(--hair); border-radius:12px; margin:0 16px 16px; overflow:hidden}
+  .toc h3{margin:0; padding:10px 14px; border-bottom:1px solid var(--hair); font-size:1rem}
+  .toc ul{list-style:none; margin:0; padding:8px 8px 12px}
+  .toc a{display:block; padding:6px 8px; border-radius:8px}
+  .toc a:hover{background:rgba(0,0,0,.04); text-decoration:none}
+
+  /* ====== References ====== */
+  #references ol{padding-left:22px}
+  #references li{margin:6px 0}
+  sup a{color:var(--link)}
+  .back{font-size:.9em; margin-left:.3em}
+
+  /* ====== Drawer Nav (mobile) ====== */
+  nav.drawer{
+    position:fixed; inset:0 0 0 auto; width:min(88vw,360px); background:var(--panel);
+    transform:translateX(100%); transition:transform .25s ease; border-left:1px solid var(--hair); z-index:80;
+    display:flex; flex-direction:column;
+  }
+  nav.drawer.open{transform:none}
+  .drawer-head{display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border-bottom:1px solid var(--hair)}
+  .drawer-links{padding:10px 12px 20px}
+  .drawer-links a{display:block; padding:10px 12px; border-radius:10px; color:var(--text)}
+  .drawer-links a:hover{background:rgba(0,0,0,.05); text-decoration:none}
+
+  /* ====== Print ====== */
+  @media print{
+    header,nav.drawer,.quick,.toc{display:none !important}
+    body{background:#fff; color:#000}
+    main,aside.infobox{box-shadow:none; border:1px solid #000}
+    a[href]:after{content:" (" attr(href) ")"; font-size:.9em}
+  }
+  header {
+  background: var(--panel);
+  padding: 1rem 2rem;
+  box-shadow: var(--shadow);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+nav a {
+  margin: 0 1.5rem;
+  color: var(--link);
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+nav a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+nav a.blog-btn {
+  background: var(--accent);
+  color: #fff;
+  padding: 0.4rem 0.8rem;
+  border-radius: 5px;
+  transition: background 0.3s;
+}
+
+nav a.blog-btn:hover {
+  background: var(--accent-2);
+}
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  nav {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  nav a {
+    margin: 0.5rem 0;
+  }
+}
+
+</style>
+</head>
+
+<body class="light">
+  <!-- Header -->
+  <header>
+    <div class="head-wrap" role="navigation" aria-label="Site header">
+      <div class="brand">
+        <div>
+          <h1>Djefferson Saintilus</h1>
+          <p>Pentester · Programmer · Cybersecurity Enthusiast</p>
+        </div>
+      </div>
+<nav>
+  <a href="index.html">Portfolio</a>
+  <a href="blog.html" class="blog-btn">Blog</a>
+</nav>
+
+      <div class="actions">
+        <button id="themeToggle" class="btn" aria-pressed="false" title="Toggle color theme">Toggle Theme</button>
+        <button id="hamburger" class="hamburger" aria-label="Open menu" aria-controls="drawer" aria-expanded="false"><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer -->
+  <nav id="drawer" class="drawer" aria-hidden="true" aria-label="Mobile menu">
+    <div class="drawer-head">
+      <strong>Menu</strong>
+      <button id="closeDrawer" class="btn" aria-label="Close menu">Close</button>
+    </div>
+    <div class="drawer-links">
+      <a href="#bio">Biography</a>
+      <a href="#education">Education</a>
+      <a href="#career">Career</a>
+      <a href="#projects">Notable Projects</a>
+      <a href="#publications">Publications & Media</a>
+      <a href="#personal">Personal</a>
+      <a href="#references">References</a>
+    </div>
+  </nav>
+
+  <!-- Two-column Layout -->
+  <div class="layout">
+    <!-- Main -->
+    <main>
+      <div class="content">
+        <!-- Inline TOC -->
+        <nav class="toc reveal in" aria-label="On this page">
+          <h3>Contents</h3>
+          <ul>
+            <li><a href="#bio">Biography</a></li>
+            <li><a href="#education">Education</a></li>
+            <li><a href="#career">Career</a></li>
+            <li><a href="#projects">Notable Projects</a></li>
+            <li><a href="#publications">Publications & Media</a></li>
+            <li><a href="#personal">Personal</a></li>
+            <li><a href="#references">References</a></li>
+          </ul>
+        </nav>
+
+        <!-- Biography -->
+        <section id="bio" class="section reveal">
+          <h2 class="collapsible" aria-expanded="true"><span class="chev" aria-hidden="true"></span> Biography</h2>
+          <div class="body">
+            <p>
+              Djefferson Saintilus is a Haitian cybersecurity professional specializing in penetration testing and secure backend development.
+              Known as “Kal” in online communities<sup><a href="#ref-alias">1</a></sup>, he is recognized for practical problem-solving in web security,
+              combining professional pentesting, open-source tooling, and community education.
+            </p>
+          </div>
+        </section>
+
+        <!-- Education -->
+        <section id="education" class="section reveal">
+          <h2 class="collapsible" aria-expanded="true"><span class="chev" aria-hidden="true"></span> Education</h2>
+          <div class="body">
+            <ul>
+              <li>Completed the <em>Junior Penetration Tester</em> learning path (TryHackMe)<sup><a href="#ref-training">2</a></sup></li>
+              <li>Completed <em>Offensive Penetration Testing</em> coursework (Cybrary)<sup><a href="#ref-training">2</a></sup></li>
+              <li>Certifications: CEH v9 (Certified Ethical Hacker) and LPIC-1 (Linux Professional)<sup><a href="#ref-certs">3</a></sup></li>
+              <li>Ongoing Computer Science studies with emphasis on Python and PHP<sup><a href="#ref-portfolio">4</a></sup></li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Career -->
+        <section id="career" class="section reveal">
+          <h2 class="collapsible" aria-expanded="true"><span class="chev" aria-hidden="true"></span> Career</h2>
+          <div class="body">
+            <ul>
+              <li><strong>Secure Society</strong> — Co-founder and lead, delivering vulnerability assessments and penetration tests<sup><a href="#ref-secure-society">5</a></sup></li>
+              <li><strong>KWENPAM</strong> — Web Penetration Tester (e-commerce, Haiti)<sup><a href="#ref-portfolio">4</a></sup></li>
+              <li><strong>MaketPAMHT</strong> — Web Application Security Analyst (e-commerce, Haiti)<sup><a href="#ref-portfolio">4</a></sup></li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Projects -->
+        <section id="projects" class="section reveal">
+          <h2 class="collapsible" aria-expanded="true"><span class="chev" aria-hidden="true"></span> Notable Projects</h2>
+          <div class="body">
+            <ul>
+              <li><strong>PASM</strong> — Password Manager Security Analyzer<sup><a href="#ref-projects">6</a></sup></li>
+              <li><strong>gtoSearch</strong> — CLI helper for GTFOBins queries<sup><a href="#ref-projects">6</a></sup></li>
+              <li><strong>NoteMaster</strong> — PyQt5 note-taking application<sup><a href="#ref-projects">6</a></sup></li>
+              <li><strong>SpyPro</strong> — Automated pentesting workflow tool<sup><a href="#ref-projects">6</a></sup></li>
+              <li><strong>File Integrity Checker</strong> — CLI hashing/tamper detection<sup><a href="#ref-projects">6</a></sup></li>
+              <li><strong>SWAV</strong> — Deliberately vulnerable web app for training<sup><a href="#ref-projects">6</a></sup></li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Publications & Media -->
+        <section id="publications" class="section reveal">
+          <h2 class="collapsible" aria-expanded="true"><span class="chev" aria-hidden="true"></span> Publications & Media</h2>
+          <div class="body">
+            <ul>
+              <li>French-language Termux tutorial eBook<sup><a href="#ref-portfolio">4</a></sup></li>
+              <li>Founder of the Hackbookin blog and <em>Terlinux</em> YouTube channel<sup><a href="#ref-portfolio">4</a></sup></li>
+              <li>Multilingual podcasts in Spanish, English, Haitian Creole, and French<sup><a href="#ref-voices">7</a></sup></li>
+              <li>Interviewed in Haitian tech media about Secure Society’s mission and client work<sup><a href="#ref-secure-society">5</a></sup></li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Personal -->
+        <section id="personal" class="section reveal">
+          <h2 class="collapsible" aria-expanded="true"><span class="chev" aria-hidden="true"></span> Personal</h2>
+          <div class="body">
+            <p>
+              Haitian by birth; currently based in Santo Domingo, Dominican Republic<sup><a href="#ref-portfolio">4</a></sup>.
+              Interests include gaming, podcasting, and community building. Languages: French, Haitian Creole, Spanish, and English<sup><a href="#ref-voices">7</a></sup>.
+            </p>
+          </div>
+        </section>
+
+        <!-- References -->
+        <section id="references" class="section reveal" aria-label="References">
+          <h2>References</h2>
+          <ol>
+            <li id="ref-alias">Public profile alias “Kal”. <a class="back" href="#bio" aria-label="Back to text">↩</a></li>
+            <li id="ref-training">Training: TryHackMe (Junior Pentester) & Cybrary (Offensive Pentesting). <a class="back" href="#education">↩</a></li>
+            <li id="ref-certs">Certifications: CEH v9 and LPIC-1. <a class="back" href="#education">↩</a></li>
+            <li id="ref-portfolio">Portfolio details: education & roles incl. KWENPAM, MaketPAMHT; Termux eBook; Hackbookin/Terlinux. <a class="back" href="#career">↩</a></li>
+            <li id="ref-secure-society">Secure Society: co-founding, client work, leadership mission. <a class="back" href="#career">↩</a></li>
+            <li id="ref-projects">Open-source projects: PASM, gtoSearch, NoteMaster, SpyPro, File Integrity Checker, SWAV. <a class="back" href="#projects">↩</a></li>
+            <li id="ref-voices">Voices & podcasts: multilingual content and language proficiency. <a class="back" href="#publications">↩</a></li>
+          </ol>
+        </section>
+      </div>
+    </main>
+
+    <!-- Infobox -->
+    <aside class="infobox reveal in" aria-label="Quick facts">
+      <div class="ibox-head"><strong>Infobox</strong></div>
+      <div class="ibox-photo">
+        <!-- Replace with your headshot -->
+        <img src="profile.jpg" alt="Portrait of Djefferson Saintilus">
+      </div>
+      <div class="ibox-kv">
+        <dl>
+          <dt>Full name</dt><dd>Djefferson Saintilus</dd>
+          <dt>Also known as</dt><dd>“Kal”</dd>
+          <dt>Roles</dt><dd>Pentester · Programmer · Content Creator</dd>
+          <dt>Focus</dt><dd>Web security · Backend security · Tooling</dd>
+          <dt>Location</dt><dd>Santo Domingo, Dominican Republic</dd>
+          <dt>Nationality</dt><dd>Haitian</dd>
+        </dl>
+        <div class="chips">
+          <dt style="font-weight:700">Languages</dt>
+          <dd>
+            <span class="chip">French</span>
+            <span class="chip">Haitian Creole</span>
+            <span class="chip">Spanish</span>
+            <span class="chip">English</span>
+          </dd>
+        </div>
+        <div class="chips">
+          <dt style="font-weight:700">Core stack</dt>
+          <dd>
+            <span class="chip">Python</span>
+            <span class="chip">PHP</span>
+            <span class="chip">Linux</span>
+            <span class="chip">Web App Sec</span>
+          </dd>
+        </div>
+      </div>
+      <div class="quick" aria-label="Links">
+        <!-- Replace # with live URLs -->
+        <a href="#" rel="noopener" target="_blank">Portfolio</a>
+        <a href="#" rel="noopener" target="_blank">GitHub</a>
+      </div>
+
+      <!-- Sidebar TOC -->
+      <nav class="toc" aria-label="On this page">
+        <h3>On this page</h3>
+        <ul>
+          <li><a href="#bio">Biography</a></li>
+          <li><a href="#education">Education</a></li>
+          <li><a href="#career">Career</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#publications">Publications</a></li>
+          <li><a href="#personal">Personal</a></li>
+          <li><a href="#references">References</a></li>
+        </ul>
+      </nav>
+    </aside>
+  </div>
+
+  <footer class="reveal in" style="padding:0 16px; max-width:1180px; margin:16px auto 38px; color:var(--muted)">
+    © <span id="year"></span> Djefferson Saintilus — All rights reserved.
+  </footer>
+
+<script>
+  // Smooth internal scrolling
+  document.querySelectorAll('a[href^="#"]').forEach(a=>{
+    a.addEventListener('click',e=>{
+      const id=a.getAttribute('href');
+      if(id.length>1){
+        const el=document.querySelector(id);
+        if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth', block:'start'}); }
+      }
+      // Close drawer after navigation on mobile
+      if(document.getElementById('drawer').classList.contains('open')) toggleDrawer(false);
+    });
+  });
+
+  // Collapsibles
+  document.querySelectorAll('.collapsible').forEach(h=>{
+    h.addEventListener('click', ()=>{
+      const exp=h.getAttribute('aria-expanded')==='true';
+      h.setAttribute('aria-expanded', String(!exp));
+    });
+  });
+
+  // ===== Theme toggle with localStorage (works regardless of system theme) =====
+  const bodyEl = document.body;
+  const themeBtn = document.getElementById('themeToggle');
+
+  function applyTheme(mode){
+    bodyEl.classList.toggle('dark',  mode === 'dark');
+    bodyEl.classList.toggle('light', mode === 'light');
+    themeBtn.setAttribute('aria-pressed', mode === 'dark');
+  }
+
+  const savedTheme = localStorage.getItem('theme');
+  const initialTheme = savedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  applyTheme(initialTheme);
+
+  themeBtn.addEventListener('click', ()=>{
+    const next = bodyEl.classList.contains('dark') ? 'light' : 'dark';
+    applyTheme(next);
+    localStorage.setItem('theme', next);
+  });
+
+  // Drawer controls
+  const drawer=document.getElementById('drawer');
+  const hamburger=document.getElementById('hamburger');
+  const closeDrawer=document.getElementById('closeDrawer');
+  function toggleDrawer(open){
+    drawer.classList.toggle('open', open);
+    drawer.setAttribute('aria-hidden', String(!open));
+    hamburger.setAttribute('aria-expanded', String(open));
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+  hamburger.addEventListener('click', ()=>toggleDrawer(!drawer.classList.contains('open')));
+  closeDrawer.addEventListener('click', ()=>toggleDrawer(false));
+  window.addEventListener('keydown', e=>{ if(e.key==='Escape' && drawer.classList.contains('open')) toggleDrawer(false); });
+
+  // Year
+  document.getElementById('year').textContent=new Date().getFullYear();
+
+  // Reveal on scroll (motion-safe)
+  const obs = ('IntersectionObserver' in window) ? new IntersectionObserver((entries)=>{
+    entries.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in'); obs.unobserve(en.target); } });
+  }, {threshold: .12}) : null;
+  document.querySelectorAll('.reveal').forEach(el=>{ if(obs) obs.observe(el); else el.classList.add('in'); });
+</script>
+</body>
+</html>

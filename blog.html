@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Djefferson Saintilus - Blog</title>
+  <style>
+    :root {
+      --bg:#f8f9fa; --panel:#ffffff; --text:#202122; --muted:#6a6d70; --hair:#dfe1e3;
+      --link:#0645ad; --accent:#2d6cdf; --accent-2:#1b4fb4; --shadow:0 6px 18px rgba(0,0,0,.06);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg:#1f2023; --panel:#272a2f; --text:#e8e9eb; --muted:#a9aeb3; --hair:#383c42;
+        --link:#79aaff; --accent:#4c7dff; --accent-2:#315ed7; --shadow:0 10px 28px rgba(0,0,0,.35);
+      }
+    }
+    .light {
+      --bg:#f8f9fa; --panel:#ffffff; --text:#202122; --muted:#6a6d70; --hair:#dfe1e3;
+      --link:#0645ad; --accent:#2d6cdf; --accent-2:#1b4fb4; --shadow:0 6px 18px rgba(0,0,0,.06);
+    }
+    .dark {
+      --bg:#1f2023; --panel:#272a2f; --text:#e8e9eb; --muted:#a9aeb3; --hair:#383c42;
+      --link:#79aaff; --accent:#4c7dff; --accent-2:#315ed7; --shadow:0 10px 28px rgba(0,0,0,.35);
+    }
+    body {
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: var(--panel);
+      padding: 1rem;
+      box-shadow: var(--shadow);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    nav a {
+      margin: 0 1rem;
+      color: var(--link);
+      text-decoration: none;
+    }
+    nav a:hover {
+      color: var(--accent);
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 2rem;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      color: var(--muted);
+    }
+    .blog-post {
+      background: var(--panel);
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+    }
+    .blog-post:hover {
+      background: var(--hair);
+    }
+    .blog-post h3 {
+      margin-top: 0;
+      color: var(--accent);
+    }
+    #themeToggle {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    .full-post {
+      background: var(--panel);
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+    }
+    .back-btn {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .back-btn:hover {
+      background: var(--accent-2);
+    }
+  </style>
+</head>
+<body class="light">
+  <header>
+    <div><strong>Djefferson Saintilus</strong></div>
+    <nav>
+      <a href="index.html">Portfolio</a>
+      <a href="blog.html">Blog</a>
+    </nav>
+    <button id="themeToggle" aria-pressed="false">Toggle Theme</button>
+  </header>
+
+  <div class="container">
+    <h1>Blog</h1>
+    <div id="blog-list"></div>
+    <div id="blog-post-view" style="display:none;"></div>
+  </div>
+
+  <footer>
+    &copy; 2025 Djefferson Saintilus
+  </footer>
+
+  <!-- Embedded JSON -->
+  <script id="articles-data" type="application/json">
+  [
+    {
+      "title": "Understanding Penetration Testing",
+      "date": "2025-08-15",
+      "author": "Djefferson Saintilus",
+      "content": "Penetration testing, often called pen testing, is a simulated cyber attack against your computer system to check for exploitable vulnerabilities..."
+    },
+    {
+      "title": "Why Secure Coding Matters",
+      "date": "2025-08-10",
+      "author": "Djefferson Saintilus",
+      "content": "Secure coding is essential in the modern world. Every year, vulnerabilities caused by poor coding practices lead to data breaches..."
+    }
+  ]
+  </script>
+
+  <script>
+    const bodyEl = document.body;
+    const themeBtn = document.getElementById('themeToggle');
+
+    function applyTheme(mode){
+      bodyEl.classList.toggle('dark',  mode === 'dark');
+      bodyEl.classList.toggle('light', mode === 'light');
+      themeBtn.setAttribute('aria-pressed', mode === 'dark');
+    }
+
+    const saved = localStorage.getItem('theme');
+    const initial = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    applyTheme(initial);
+
+    themeBtn.addEventListener('click', ()=>{
+      const next = bodyEl.classList.contains('dark') ? 'light' : 'dark';
+      applyTheme(next);
+      localStorage.setItem('theme', next);
+    });
+
+    let articles = [];
+
+    function loadBlog() {
+      const jsonData = document.getElementById('articles-data').textContent;
+      articles = JSON.parse(jsonData);
+      renderList();
+    }
+
+    function renderList() {
+      const container = document.getElementById('blog-list');
+      container.innerHTML = '';
+      articles.forEach((post, idx) => {
+        const article = document.createElement('article');
+        article.className = 'blog-post';
+        article.innerHTML = `
+          <h3>${post.title}</h3>
+          <small>${post.date} — by ${post.author}</small>
+          <p>${post.content.substring(0, 150)}...</p>
+        `;
+        article.addEventListener('click', () => showPost(idx));
+        container.appendChild(article);
+      });
+    }
+
+    function showPost(index) {
+      const post = articles[index];
+      document.getElementById('blog-list').style.display = 'none';
+      const view = document.getElementById('blog-post-view');
+      view.innerHTML = `
+        <div class="full-post">
+          <h2>${post.title}</h2>
+          <small>${post.date} — by ${post.author}</small>
+          <p>${post.content}</p>
+          <a class="back-btn" href="#">Back to blog list</a>
+        </div>
+      `;
+      view.style.display = 'block';
+      view.querySelector('.back-btn').addEventListener('click', (e) => {
+        e.preventDefault();
+        view.style.display = 'none';
+        document.getElementById('blog-list').style.display = 'block';
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', loadBlog);
+  </script>
+</body>
+</html>

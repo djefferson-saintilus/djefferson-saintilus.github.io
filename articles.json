@@ -1,0 +1,16 @@
+[
+  {
+    "title": "Understanding Penetration Testing",
+    "date": "2025-08-15",
+    "author": "Djefferson Saintilus",
+    "content": "This is the full article content...",
+    "tags": ["Cybersecurity", "Pentesting"]
+  },
+  {
+    "title": "Why Secure Coding Matters",
+    "date": "2025-08-10",
+    "author": "Djefferson Saintilus",
+    "content": "Another article...",
+    "tags": ["Programming", "Security"]
+  }
+]
