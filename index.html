@@ -9,8 +9,6 @@
 <link rel="preload" as="image" href="profile.webp" imagesizes="304px" fetchpriority="high">
 <link rel="preconnect" href="https://djefferson-saintilus.github.io" crossorigin>
 <link rel="canonical" href="https://djefferson-saintilus.github.io/">
-<meta http-equiv="refresh" content="0; url=https://djefferson-saintilus.github.io/">
-
 <style>
   /* ====== Design Tokens (defaults) ====== */
   :root{
@@ -498,6 +496,7 @@ nav a.blog-btn:hover {
     entries.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in'); obs.unobserve(en.target); } });
   }, {threshold: .12}) : null;
   document.querySelectorAll('.reveal').forEach(el=>{ if(obs) obs.observe(el); else el.classList.add('in'); });
+  
 </script>
 </body>
 </html>
