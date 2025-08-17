@@ -6,6 +6,9 @@
 <title>Djefferson Saintilus — Biography & Portfolio</title>
 <meta name="color-scheme" content="light dark" />
 <meta name="description" content="Biography and portfolio of Djefferson Saintilus — Haitian cybersecurity professional, penetration tester, programmer, and content creator." />
+<link rel="preload" as="image" href="profile.webp" imagesizes="304px" fetchpriority="high">
+<link rel="preconnect" href="https://djefferson-saintilus.github.io" crossorigin>
+
 <style>
   /* ====== Design Tokens (defaults) ====== */
   :root{
@@ -361,7 +364,15 @@ nav a.blog-btn:hover {
       <div class="ibox-head"><strong>Infobox</strong></div>
       <div class="ibox-photo">
         <!-- Replace with your headshot -->
-        <img src="profile.jpg" alt="Portrait of Djefferson Saintilus">
+        <img 
+  src="profile.webp" 
+  alt="Djefferson Saintilus" 
+  width="304" 
+  height="304" 
+  fetchpriority="high" 
+  decoding="async" 
+/>
+
       </div>
       <div class="ibox-kv">
         <dl>
