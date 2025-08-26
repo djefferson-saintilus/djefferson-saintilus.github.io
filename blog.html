@@ -107,9 +107,22 @@
     .tags { display:flex; flex-wrap:wrap; gap:.4rem }
     .tag { display:inline-block; padding:.25rem .6rem; border:1px solid var(--hair); border-radius:999px; background:rgba(0,0,0,.03); cursor:pointer; user-select:none }
     .tag[aria-pressed="true"] { background: var(--accent); color:#fff; border-color: transparent }
+
+    /* Skip link */
+    .skip-link{ position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden }
+    .skip-link:focus{ left:16px; top:10px; width:auto; height:auto; padding:.5rem .8rem; background:#000; color:#fff; border-radius:6px; z-index:1000 }
+    /* Pagination */
+    .pagination{ display:flex; gap:.4rem; align-items:center; margin:1rem 0; flex-wrap:wrap }
+    .pagination a{ border:1px solid var(--hair); border-radius:8px; padding:.3rem .6rem; text-decoration:none; color:var(--link) }
+    .pagination a[aria-current="page"]{ background:var(--accent); color:#fff; border-color:transparent }
+    /* Code blocks */
+    pre{ background:rgba(0,0,0,.06); padding:1rem; border-radius:8px; overflow:auto }
+    pre code{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; font-size:.95em }
+    .copy-btn{ float:right; margin:-.5rem -.5rem 0 0; background:var(--accent); color:#fff; border:none; padding:.3rem .5rem; border-radius:6px; cursor:pointer }
   </style>
 </head>
 <body class="light">
+  <a class="skip-link" href="#main">Skip to content</a>
   <header>
     <div><strong>Djefferson Saintilus</strong></div>
     <nav>
@@ -119,7 +132,7 @@
     <button id="themeToggle" aria-pressed="false">Toggle Theme</button>
   </header>
 
-  <div class="container">
+  <div id="main" class="container" role="main">
     <h1>Blog</h1>
     <!-- Controls: search + tags -->
     <div class="controls" role="region" aria-label="Blog filters">
@@ -127,6 +140,7 @@
       <input id="search" type="search" aria-labelledby="search-label" placeholder="Search posts..." autocomplete="off">
       <div id="tags" class="tags" role="toolbar" aria-label="Filter by tag"></div>
     </div>
+    <div id="blog-list" role="list" aria-live="polite"></div>
     <div id="blog-list" role="list"></div>
     <div id="blog-post-view" style="display:none;"></div>
   </div>
@@ -183,6 +197,10 @@
     let searchTerm = '';
     let lastFocused = null;
 
+    const PAGE_SIZE = 10;
+
+
+
     const listContainer = document.getElementById('blog-list');
     const postView = document.getElementById('blog-post-view');
     const tagsBar = document.getElementById('tags');
@@ -194,7 +212,11 @@
 
     async function loadBlog(){
       try{
+
+        const res = await fetch('articles.json?v=' + Date.now(), {cache: 'no-cache'});
+
         const res = await fetch('articles.json', {cache: 'no-cache'});
+
         if(!res.ok) throw new Error('Failed to fetch');
         articles = await res.json();
       }catch(err){
@@ -212,6 +234,9 @@
         seen.add(slug);
         post.slug = slug;
         if(!Array.isArray(post.tags)) post.tags = [];
+        const words = String(post.content||'').trim().split(/\s+/).filter(Boolean).length;
+        post.readingMinutes = Math.max(1, Math.ceil(words/200));
+
         slugToIndex.set(slug, i);
       });
       renderTags();
@@ -226,17 +251,41 @@
         const btn = document.createElement('button');
         btn.type = 'button';
         btn.className = 'tag';
+
+        btn.setAttribute('aria-pressed', String(selectedTags.has(tag)));
+        btn.textContent = tag;
+        const toggle = ()=>{
+
         btn.setAttribute('aria-pressed', 'false');
         btn.textContent = tag;
         btn.addEventListener('click', ()=>{
+
           const isOn = btn.getAttribute('aria-pressed') === 'true';
           btn.setAttribute('aria-pressed', String(!isOn));
           if(isOn){ selectedTags.delete(tag); } else { selectedTags.add(tag); }
           renderList();
+        };
+        btn.addEventListener('click', toggle);
+        btn.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); toggle(); }});
+
         });
         tagsBar.appendChild(btn);
       });
     }
+
+    function setTagPressedStates(){
+      const btns = tagsBar.querySelectorAll('.tag');
+      btns.forEach(btn=>{
+        const tag = btn.textContent || '';
+        btn.setAttribute('aria-pressed', String(selectedTags.has(tag)));
+      });
+    }
+
+    function renderTagLinks(tags){
+      if(!tags || !tags.length) return '';
+      return ' · ' + tags.map(t=>`<a href="#/tag/${encodeURIComponent(t)}" class="tag-link">${t}</a>`).join(', ');
+    }
+
 
     function passesFilters(post){
       const term = searchTerm.trim().toLowerCase();
@@ -247,6 +296,28 @@
       return matchesTerm && matchesTags;
     }
 
+    function renderPagination(total, current){
+      const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+      if(pages === 1) return null;
+      const nav = document.createElement('nav');
+      nav.className = 'pagination';
+      nav.setAttribute('aria-label','Pagination');
+      const makeLink = (p, label=p)=>{
+        const a = document.createElement('a');
+        a.href = `?page=${p}`;
+        a.className = 'page-link';
+        a.textContent = String(label);
+        if(p === current) a.setAttribute('aria-current','page');
+        a.addEventListener('click', (e)=>{ e.preventDefault(); history.pushState({}, '', `?page=${p}${location.hash||''}`); renderList(); });
+        return a;
+      };
+      if(current>1){ nav.appendChild(makeLink(current-1,'Prev')); }
+      for(let p=1;p<=pages;p++){ nav.appendChild(makeLink(p)); }
+      if(current<pages){ nav.appendChild(makeLink(current+1,'Next')); }
+      return nav;
+    }
+
+
     function renderList(){
       document.title = 'Djefferson Saintilus - Blog';
       ensureMetaDescription('Articles on penetration testing, secure coding, and cybersecurity.');
@@ -256,6 +327,119 @@
       listContainer.style.display = 'block';
       listContainer.innerHTML = '';
       const filtered = articles.filter(passesFilters);
+
+      const params = new URLSearchParams(location.search);
+      const page = Math.max(1, parseInt(params.get('page')||'1',10));
+      const start = (page-1) * PAGE_SIZE;
+      const end = start + PAGE_SIZE;
+      const pageItems = filtered.slice(start, end);
+
+      if(pageItems.length === 0){
+        const empty = document.createElement('p');
+        empty.textContent = 'No posts match your filters.';
+        listContainer.appendChild(empty);
+      } else {
+        pageItems.forEach((post)=>{
+          const article = document.createElement('article');
+          article.className = 'blog-post';
+          article.setAttribute('role','listitem');
+          const href = `#/post/${post.slug}`;
+          article.innerHTML = `
+            <a href="${href}" style="color:inherit; text-decoration:none">
+              <h3>${post.title}</h3>
+              <small>${post.date} — by ${post.author} · ${post.readingMinutes} min read${renderTagLinks(post.tags)}</small>
+              <p>${(post.content||'').substring(0, 180)}...</p>
+            </a>
+          `;
+          article.querySelector('a').addEventListener('click', (e)=>{
+            lastFocused = e.currentTarget;
+          });
+          listContainer.appendChild(article);
+        });
+      }
+
+      const pagination = renderPagination(filtered.length, page);
+      if(pagination) listContainer.appendChild(pagination);
+    }
+
+    function ensureMetaDescription(content){
+      let m = document.querySelector('meta[name="description"]');
+      if(!m){
+        m = document.createElement('meta');
+        m.setAttribute('name','description');
+        document.head.appendChild(m);
+      }
+      if(content){ m.setAttribute('content', content); }
+    }
+
+    function ensureJsonLd(post){
+      let s = document.getElementById('post-jsonld');
+      if(!post){
+        if(s) s.remove();
+        return;
+      }
+      const data = {
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        headline: post.title,
+        author: { '@type': 'Person', name: post.author || 'Djefferson Saintilus' },
+        datePublished: post.date,
+        description: (post.content||'').substring(0, 160),
+        mainEntityOfPage: {
+          '@type': 'WebPage',
+          '@id': location.href
+        }
+      };
+      if(!s){
+        s = document.createElement('script');
+        s.id = 'post-jsonld';
+        s.type = 'application/ld+json';
+        document.head.appendChild(s);
+      }
+      s.textContent = JSON.stringify(data);
+    }
+
+    function enhanceCodeBlocks(container){
+      container.querySelectorAll('pre > code').forEach(code=>{
+        const pre = code.parentElement;
+        const btn = document.createElement('button');
+        btn.className = 'copy-btn';
+        btn.type = 'button';
+        btn.textContent = 'Copy';
+        btn.addEventListener('click', async ()=>{
+          try{ await navigator.clipboard.writeText(code.innerText); btn.textContent='Copied'; setTimeout(()=>btn.textContent='Copy', 1200); }
+          catch(e){ btn.textContent='Failed'; setTimeout(()=>btn.textContent='Copy', 1200); }
+        });
+        pre.insertBefore(btn, pre.firstChild);
+      });
+    }
+
+    function enhanceHeadingsAndToc(container){
+      const headings = container.querySelectorAll('h2, h3');
+      if(headings.length === 0) return;
+      const toc = document.createElement('nav');
+      toc.setAttribute('aria-label','On this page');
+      toc.className = 'mini-toc';
+      const ul = document.createElement('ul');
+      toc.appendChild(ul);
+      headings.forEach(h=>{
+        if(!h.id){ h.id = slugify(h.textContent||'section'); }
+        const a = document.createElement('a');
+        a.href = `#${h.id}`;
+        a.textContent = h.textContent||'';
+        const li = document.createElement('li');
+        if(h.tagName.toLowerCase()==='h3') li.style.marginLeft = '16px';
+        li.appendChild(a);
+        ul.appendChild(li);
+        const anchor = document.createElement('a');
+        anchor.href = `#${h.id}`;
+        anchor.textContent = '¶';
+        anchor.style.marginLeft = '.4rem';
+        anchor.style.textDecoration = 'none';
+        anchor.setAttribute('aria-label','Permalink');
+        h.appendChild(anchor);
+      });
+      container.prepend(toc);
       if(filtered.length === 0){
         const empty = document.createElement('p');
         empty.textContent = 'No posts match your filters.';
@@ -332,6 +516,8 @@
       postView.innerHTML = `
         <div class="full-post">
           <h2 id="post-title">${post.title}</h2>
+          <small>${post.date} — by ${post.author} · ${post.readingMinutes} min read${renderTagLinks(post.tags)}</small>
+
           <small>${post.date} — by ${post.author}${post.tags?.length?` · ${post.tags.join(', ')}`:''}</small>
           <p>${post.content}</p>
           <a class="back-btn" href="#">Back to blog list</a>
@@ -344,6 +530,10 @@
       // focus management
       const h = document.getElementById('post-title');
       if(h) h.tabIndex = -1, h.focus();
+      // enhance code blocks
+      enhanceCodeBlocks(postView);
+      // headings and mini-TOC
+      enhanceHeadingsAndToc(postView.querySelector('.full-post'));
       // back
       postView.querySelector('.back-btn').addEventListener('click', (e)=>{
         e.preventDefault();
@@ -356,12 +546,21 @@
     }
 
     function router(){
+      const tagMatch = location.hash.match(/^#\/tag\/([^\s?#]+)/);
+      if(tagMatch){
+        const tag = decodeURIComponent(tagMatch[1]);
+        selectedTags = new Set([tag]);
+        setTagPressedStates();
+        renderList();
+        return;
+      }
       const m = location.hash.match(/^#\/post\/([^\s?#]+)/);
       if(m){ showPostBySlug(decodeURIComponent(m[1])); }
       else { renderList(); }
     }
 
     window.addEventListener('hashchange', router);
+    window.addEventListener('popstate', ()=>{ if(location.hash) router(); else renderList(); });
 
     searchInput.addEventListener('input', (e)=>{ searchTerm = e.target.value; renderList(); });
 
