@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Djefferson Saintilus — Blog</title>
+    <link>https://djefferson-saintilus.github.io/blog.html</link>
+    <description>Articles on penetration testing, secure coding, and cybersecurity.</description>
+    <language>en</language>
+    <lastBuildDate>Sat, 16 Aug 2025 12:41:22 +0000</lastBuildDate>
+
+    <item>
+      <title>Understanding Penetration Testing</title>
+      <link>https://djefferson-saintilus.github.io/blog.html#/post/understanding-penetration-testing</link>
+      <guid isPermaLink="false">understanding-penetration-testing</guid>
+      <pubDate>Fri, 15 Aug 2025 00:00:00 +0000</pubDate>
+      <description>Penetration testing, often called pen testing, is a simulated cyber attack against your computer system to check for exploitable vulnerabilities...</description>
+    </item>
+
+    <item>
+      <title>Why Secure Coding Matters</title>
+      <link>https://djefferson-saintilus.github.io/blog.html#/post/why-secure-coding-matters</link>
+      <guid isPermaLink="false">why-secure-coding-matters</guid>
+      <pubDate>Sun, 10 Aug 2025 00:00:00 +0000</pubDate>
+      <description>Secure coding is essential in the modern world. Every year, vulnerabilities caused by poor coding practices lead to data breaches...</description>
+    </item>
+  </channel>
+</rss>

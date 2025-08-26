@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Djefferson Saintilus - Blog</title>
+  <meta name="description" content="Articles on penetration testing, secure coding, and cybersecurity by Djefferson Saintilus.">
+  <link rel="alternate" type="application/rss+xml" title="Djefferson Saintilus Blog RSS" href="rss.xml">
   <style>
     :root {
       --bg:#f8f9fa; --panel:#ffffff; --text:#202122; --muted:#6a6d70; --hair:#dfe1e3;
@@ -98,6 +100,13 @@
     .back-btn:hover {
       background: var(--accent-2);
     }
+    /* Controls */
+    .controls { display:flex; flex-wrap:wrap; gap:.6rem; align-items:center; margin: 0 0 1rem }
+    .controls label { font-weight:600 }
+    .controls input[type="search"] { flex:1 1 240px; padding:.5rem .65rem; border-radius:8px; border:1px solid var(--hair); background:var(--panel); color:var(--text) }
+    .tags { display:flex; flex-wrap:wrap; gap:.4rem }
+    .tag { display:inline-block; padding:.25rem .6rem; border:1px solid var(--hair); border-radius:999px; background:rgba(0,0,0,.03); cursor:pointer; user-select:none }
+    .tag[aria-pressed="true"] { background: var(--accent); color:#fff; border-color: transparent }
   </style>
 </head>
 <body class="light">
@@ -112,7 +121,13 @@
 
   <div class="container">
     <h1>Blog</h1>
-    <div id="blog-list"></div>
+    <!-- Controls: search + tags -->
+    <div class="controls" role="region" aria-label="Blog filters">
+      <label for="search" id="search-label">Search</label>
+      <input id="search" type="search" aria-labelledby="search-label" placeholder="Search posts..." autocomplete="off">
+      <div id="tags" class="tags" role="toolbar" aria-label="Filter by tag"></div>
+    </div>
+    <div id="blog-list" role="list"></div>
     <div id="blog-post-view" style="display:none;"></div>
   </div>
 
@@ -120,20 +135,22 @@
     &copy; 2025 Djefferson Saintilus
   </footer>
 
-  <!-- Embedded JSON -->
+  <!-- Embedded JSON (fallback) -->
   <script id="articles-data" type="application/json">
   [
     {
       "title": "Understanding Penetration Testing",
       "date": "2025-08-15",
       "author": "Djefferson Saintilus",
-      "content": "Penetration testing, often called pen testing, is a simulated cyber attack against your computer system to check for exploitable vulnerabilities..."
+      "content": "Penetration testing, often called pen testing, is a simulated cyber attack against your computer system to check for exploitable vulnerabilities...",
+      "tags": ["Cybersecurity","Pentesting"]
     },
     {
       "title": "Why Secure Coding Matters",
       "date": "2025-08-10",
       "author": "Djefferson Saintilus",
-      "content": "Secure coding is essential in the modern world. Every year, vulnerabilities caused by poor coding practices lead to data breaches..."
+      "content": "Secure coding is essential in the modern world. Every year, vulnerabilities caused by poor coding practices lead to data breaches...",
+      "tags": ["Programming","Security"]
     }
   ]
   </script>
@@ -158,49 +175,195 @@
       localStorage.setItem('theme', next);
     });
 
+    /** ===== Blog logic ===== */
+    /** State */
     let articles = [];
+    let slugToIndex = new Map();
+    let selectedTags = new Set();
+    let searchTerm = '';
+    let lastFocused = null;
 
-    function loadBlog() {
-      const jsonData = document.getElementById('articles-data').textContent;
-      articles = JSON.parse(jsonData);
-      renderList();
+    const listContainer = document.getElementById('blog-list');
+    const postView = document.getElementById('blog-post-view');
+    const tagsBar = document.getElementById('tags');
+    const searchInput = document.getElementById('search');
+
+    function slugify(text){
+      return text.toLowerCase().replace(/[^a-z0-9\s-]/g,'').trim().replace(/\s+/g,'-').replace(/-+/g,'-');
     }
 
-    function renderList() {
-      const container = document.getElementById('blog-list');
-      container.innerHTML = '';
-      articles.forEach((post, idx) => {
-        const article = document.createElement('article');
-        article.className = 'blog-post';
-        article.innerHTML = `
-          <h3>${post.title}</h3>
-          <small>${post.date} — by ${post.author}</small>
-          <p>${post.content.substring(0, 150)}...</p>
-        `;
-        article.addEventListener('click', () => showPost(idx));
-        container.appendChild(article);
+    async function loadBlog(){
+      try{
+        const res = await fetch('articles.json', {cache: 'no-cache'});
+        if(!res.ok) throw new Error('Failed to fetch');
+        articles = await res.json();
+      }catch(err){
+        const jsonData = document.getElementById('articles-data').textContent;
+        articles = JSON.parse(jsonData);
+      }
+      // prepare slugs and index
+      slugToIndex.clear();
+      const seen = new Set();
+      articles.forEach((post, i)=>{
+        const base = post.slug ? String(post.slug) : slugify(post.title || `post-${i+1}`);
+        let slug = base;
+        let k = 2;
+        while(seen.has(slug)){ slug = `${base}-${k++}`; }
+        seen.add(slug);
+        post.slug = slug;
+        if(!Array.isArray(post.tags)) post.tags = [];
+        slugToIndex.set(slug, i);
+      });
+      renderTags();
+      router();
+    }
+
+    function renderTags(){
+      const tagSet = new Set();
+      articles.forEach(p=> (p.tags||[]).forEach(t=>tagSet.add(t)));
+      tagsBar.innerHTML='';
+      [...tagSet].sort().forEach(tag=>{
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'tag';
+        btn.setAttribute('aria-pressed', 'false');
+        btn.textContent = tag;
+        btn.addEventListener('click', ()=>{
+          const isOn = btn.getAttribute('aria-pressed') === 'true';
+          btn.setAttribute('aria-pressed', String(!isOn));
+          if(isOn){ selectedTags.delete(tag); } else { selectedTags.add(tag); }
+          renderList();
+        });
+        tagsBar.appendChild(btn);
       });
     }
 
-    function showPost(index) {
-      const post = articles[index];
-      document.getElementById('blog-list').style.display = 'none';
-      const view = document.getElementById('blog-post-view');
-      view.innerHTML = `
+    function passesFilters(post){
+      const term = searchTerm.trim().toLowerCase();
+      const matchesTerm = term.length === 0 ||
+        (post.title && post.title.toLowerCase().includes(term)) ||
+        (post.content && post.content.toLowerCase().includes(term));
+      const matchesTags = selectedTags.size === 0 || (post.tags||[]).some(t=>selectedTags.has(t));
+      return matchesTerm && matchesTags;
+    }
+
+    function renderList(){
+      document.title = 'Djefferson Saintilus - Blog';
+      ensureMetaDescription('Articles on penetration testing, secure coding, and cybersecurity.');
+      ensureJsonLd(null);
+
+      postView.style.display = 'none';
+      listContainer.style.display = 'block';
+      listContainer.innerHTML = '';
+      const filtered = articles.filter(passesFilters);
+      if(filtered.length === 0){
+        const empty = document.createElement('p');
+        empty.textContent = 'No posts match your filters.';
+        listContainer.appendChild(empty);
+        return;
+      }
+      filtered.forEach((post, idx)=>{
+        const article = document.createElement('article');
+        article.className = 'blog-post';
+        article.setAttribute('role','listitem');
+        const href = `#/post/${post.slug}`;
+        article.innerHTML = `
+          <a href="${href}" style="color:inherit; text-decoration:none">
+            <h3>${post.title}</h3>
+            <small>${post.date} — by ${post.author}${post.tags?.length?` · ${post.tags.join(', ')}`:''}</small>
+            <p>${(post.content||'').substring(0, 180)}...</p>
+          </a>
+        `;
+        article.querySelector('a').addEventListener('click', (e)=>{
+          lastFocused = e.currentTarget;
+        });
+        listContainer.appendChild(article);
+      });
+    }
+
+    function ensureMetaDescription(content){
+      let m = document.querySelector('meta[name="description"]');
+      if(!m){
+        m = document.createElement('meta');
+        m.setAttribute('name','description');
+        document.head.appendChild(m);
+      }
+      if(content){ m.setAttribute('content', content); }
+    }
+
+    function ensureJsonLd(post){
+      let s = document.getElementById('post-jsonld');
+      if(!post){
+        if(s) s.remove();
+        return;
+      }
+      const data = {
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        headline: post.title,
+        author: { '@type': 'Person', name: post.author || 'Djefferson Saintilus' },
+        datePublished: post.date,
+        description: (post.content||'').substring(0, 160),
+        mainEntityOfPage: {
+          '@type': 'WebPage',
+          '@id': location.href
+        }
+      };
+      if(!s){
+        s = document.createElement('script');
+        s.id = 'post-jsonld';
+        s.type = 'application/ld+json';
+        document.head.appendChild(s);
+      }
+      s.textContent = JSON.stringify(data);
+    }
+
+    function showPostBySlug(slug){
+      const i = slugToIndex.get(slug);
+      if(i == null){
+        // fallback to list
+        location.hash = '';
+        renderList();
+        return;
+      }
+      const post = articles[i];
+      listContainer.style.display = 'none';
+      postView.style.display = 'block';
+      postView.innerHTML = `
         <div class="full-post">
-          <h2>${post.title}</h2>
-          <small>${post.date} — by ${post.author}</small>
+          <h2 id="post-title">${post.title}</h2>
+          <small>${post.date} — by ${post.author}${post.tags?.length?` · ${post.tags.join(', ')}`:''}</small>
           <p>${post.content}</p>
           <a class="back-btn" href="#">Back to blog list</a>
         </div>
       `;
-      view.style.display = 'block';
-      view.querySelector('.back-btn').addEventListener('click', (e) => {
+      // SEO updates
+      document.title = `${post.title} — Djefferson Saintilus`;
+      ensureMetaDescription((post.content||'').substring(0, 160));
+      ensureJsonLd(post);
+      // focus management
+      const h = document.getElementById('post-title');
+      if(h) h.tabIndex = -1, h.focus();
+      // back
+      postView.querySelector('.back-btn').addEventListener('click', (e)=>{
         e.preventDefault();
-        view.style.display = 'none';
-        document.getElementById('blog-list').style.display = 'block';
+        if(location.hash.startsWith('#/post/')) history.back(); else {
+          postView.style.display = 'none';
+          listContainer.style.display = 'block';
+        }
+        if(lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
       });
     }
+
+    function router(){
+      const m = location.hash.match(/^#\/post\/([^\s?#]+)/);
+      if(m){ showPostBySlug(decodeURIComponent(m[1])); }
+      else { renderList(); }
+    }
+
+    window.addEventListener('hashchange', router);
+
+    searchInput.addEventListener('input', (e)=>{ searchTerm = e.target.value; renderList(); });
 
     document.addEventListener('DOMContentLoaded', loadBlog);
   </script>
