@@ -1,0 +1,25 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "Djefferson Saintilus — Blog",
+  "home_page_url": "https://djefferson-saintilus.github.io/",
+  "feed_url": "https://djefferson-saintilus.github.io/jsonfeed.json",
+  "description": "Articles on penetration testing, secure coding, and cybersecurity.",
+  "items": [
+    {
+      "id": "understanding-penetration-testing",
+      "url": "https://djefferson-saintilus.github.io/blog/understanding-penetration-testing.html",
+      "title": "Understanding Penetration Testing",
+      "content_text": "This is the full article content...",
+      "date_published": "2025-08-15T00:00:00+00:00",
+      "tags": ["Cybersecurity","Pentesting"]
+    },
+    {
+      "id": "why-secure-coding-matters",
+      "url": "https://djefferson-saintilus.github.io/blog/why-secure-coding-matters.html",
+      "title": "Why Secure Coding Matters",
+      "content_text": "Another article...",
+      "date_published": "2025-08-10T00:00:00+00:00",
+      "tags": ["Programming","Security"]
+    }
+  ]
+}
